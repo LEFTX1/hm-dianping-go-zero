@@ -4,6 +4,8 @@ package handler
 import (
 	"net/http"
 
+	private "hm-dianping-go-zero/internal/handler/private"
+	public "hm-dianping-go-zero/internal/handler/public"
 	"hm-dianping-go-zero/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -11,73 +13,85 @@ import (
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
-		[]rest.Route{
-			{
-				Method:  http.MethodPost,
-				Path:    "/blog",
-				Handler: saveBlogHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/blog/hot",
-				Handler: queryHotBlogHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/blog/like/:id",
-				Handler: likeBlogHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/blog/of/me",
-				Handler: queryMyBlogHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/test/refresh",
-				Handler: testRefreshTokenHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/test/refresh-login",
-				Handler: testRefreshTokenWithLoginHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/user/code",
-				Handler: sendCodeHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/user/login",
-				Handler: loginHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/user/me",
-				Handler: queryMyInfoHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/voucher",
-				Handler: addVoucherHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/voucher-order/seckill/:id",
-				Handler: seckillVoucherHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodGet,
-				Path:    "/voucher/list/:shop_id",
-				Handler: queryVoucherOfShopHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPost,
-				Path:    "/voucher/seckill",
-				Handler: addSeckillVoucherHandler(serverCtx),
-			},
-		},
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.RefreshTokenMiddleware, serverCtx.LoginMiddleware},
+			[]rest.Route{
+				{
+					Method:  http.MethodPost,
+					Path:    "/blog",
+					Handler: private.SaveBlogHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/blog/like/:id",
+					Handler: private.LikeBlogHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/blog/of/me",
+					Handler: private.QueryMyBlogHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/test/refresh-login",
+					Handler: private.TestRefreshTokenWithLoginHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/user/me",
+					Handler: private.QueryMyInfoHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/voucher",
+					Handler: private.AddVoucherHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/voucher-order/seckill/:id",
+					Handler: private.SeckillVoucherHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/voucher/list/:shop_id",
+					Handler: private.QueryVoucherOfShopHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/voucher/seckill",
+					Handler: private.AddSeckillVoucherHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/v1"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.RefreshTokenMiddleware},
+			[]rest.Route{
+				{
+					Method:  http.MethodGet,
+					Path:    "/blog/hot",
+					Handler: public.QueryHotBlogHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/test/refresh",
+					Handler: public.TestRefreshTokenHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodGet,
+					Path:    "/user/code",
+					Handler: public.SendCodeHandler(serverCtx),
+				},
+				{
+					Method:  http.MethodPost,
+					Path:    "/user/login",
+					Handler: public.LoginHandler(serverCtx),
+				},
+			}...,
+		),
 		rest.WithPrefix("/v1"),
 	)
 }

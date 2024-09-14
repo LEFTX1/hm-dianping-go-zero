@@ -1,4 +1,4 @@
-package logic
+package private
 
 import (
 	"context"
@@ -9,21 +9,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type QueryVoucherOfShopLogic struct {
+type TestRefreshTokenWithLoginLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewQueryVoucherOfShopLogic(ctx context.Context, svcCtx *svc.ServiceContext) *QueryVoucherOfShopLogic {
-	return &QueryVoucherOfShopLogic{
+func NewTestRefreshTokenWithLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *TestRefreshTokenWithLoginLogic {
+	return &TestRefreshTokenWithLoginLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *QueryVoucherOfShopLogic) QueryVoucherOfShop(req *types.QueryVoucherOfShopRequest) (resp *types.QueryVoucherOfShopReply, err error) {
+func (l *TestRefreshTokenWithLoginLogic) TestRefreshTokenWithLogin() (resp *types.TestResponse, err error) {
 	// todo: add your logic here and delete this line
 
 	return

@@ -1,4 +1,4 @@
-package logic
+package private
 
 import (
 	"context"
@@ -9,21 +9,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type QueryHotBlogLogic struct {
+type AddSeckillVoucherLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewQueryHotBlogLogic(ctx context.Context, svcCtx *svc.ServiceContext) *QueryHotBlogLogic {
-	return &QueryHotBlogLogic{
+func NewAddSeckillVoucherLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AddSeckillVoucherLogic {
+	return &AddSeckillVoucherLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *QueryHotBlogLogic) QueryHotBlog(req *types.QueryHotBlogRequest) (resp *types.BlogResponse, err error) {
+func (l *AddSeckillVoucherLogic) AddSeckillVoucher(req *types.AddVoucherRequest) (resp *types.VoucherResult, err error) {
 	// todo: add your logic here and delete this line
 
 	return

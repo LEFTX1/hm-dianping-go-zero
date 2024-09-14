@@ -1,4 +1,4 @@
-package logic
+package public
 
 import (
 	"context"
@@ -9,21 +9,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type TestRefreshTokenLogic struct {
+type SendCodeLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewTestRefreshTokenLogic(ctx context.Context, svcCtx *svc.ServiceContext) *TestRefreshTokenLogic {
-	return &TestRefreshTokenLogic{
+func NewSendCodeLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SendCodeLogic {
+	return &SendCodeLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *TestRefreshTokenLogic) TestRefreshToken() (resp *types.TestResponse, err error) {
+func (l *SendCodeLogic) SendCode(req *types.SendCodeRequest) (resp *types.SendCodeResult, err error) {
 	// todo: add your logic here and delete this line
 
 	return

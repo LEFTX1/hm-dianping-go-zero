@@ -1,17 +1,17 @@
-package handler
+package private
 
 import (
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"hm-dianping-go-zero/internal/logic"
+	"hm-dianping-go-zero/internal/logic/private"
 	"hm-dianping-go-zero/internal/svc"
 )
 
-func queryMyInfoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func TestRefreshTokenWithLoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		l := logic.NewQueryMyInfoLogic(r.Context(), svcCtx)
-		resp, err := l.QueryMyInfo()
+		l := private.NewTestRefreshTokenWithLoginLogic(r.Context(), svcCtx)
+		resp, err := l.TestRefreshTokenWithLogin()
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

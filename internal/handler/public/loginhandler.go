@@ -1,15 +1,15 @@
-package handler
+package public
 
 import (
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"hm-dianping-go-zero/internal/logic"
+	"hm-dianping-go-zero/internal/logic/public"
 	"hm-dianping-go-zero/internal/svc"
 	"hm-dianping-go-zero/internal/types"
 )
 
-func loginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func LoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.LoginFormDTO
 		if err := httpx.Parse(r, &req); err != nil {
@@ -17,7 +17,7 @@ func loginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 			return
 		}
 
-		l := logic.NewLoginLogic(r.Context(), svcCtx)
+		l := public.NewLoginLogic(r.Context(), svcCtx)
 		resp, err := l.Login(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)

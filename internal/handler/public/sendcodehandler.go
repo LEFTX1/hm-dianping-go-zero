@@ -1,24 +1,24 @@
-package handler
+package public
 
 import (
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"hm-dianping-go-zero/internal/logic"
+	"hm-dianping-go-zero/internal/logic/public"
 	"hm-dianping-go-zero/internal/svc"
 	"hm-dianping-go-zero/internal/types"
 )
 
-func saveBlogHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func SendCodeHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.SaveBlogRequest
+		var req types.SendCodeRequest
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := logic.NewSaveBlogLogic(r.Context(), svcCtx)
-		resp, err := l.SaveBlog(&req)
+		l := public.NewSendCodeLogic(r.Context(), svcCtx)
+		resp, err := l.SendCode(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

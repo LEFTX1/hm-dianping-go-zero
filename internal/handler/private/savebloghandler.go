@@ -1,24 +1,24 @@
-package handler
+package private
 
 import (
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"hm-dianping-go-zero/internal/logic"
+	"hm-dianping-go-zero/internal/logic/private"
 	"hm-dianping-go-zero/internal/svc"
 	"hm-dianping-go-zero/internal/types"
 )
 
-func likeBlogHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func SaveBlogHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.LikeBlogRequest
+		var req types.SaveBlogRequest
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := logic.NewLikeBlogLogic(r.Context(), svcCtx)
-		resp, err := l.LikeBlog(&req)
+		l := private.NewSaveBlogLogic(r.Context(), svcCtx)
+		resp, err := l.SaveBlog(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

@@ -8,11 +8,13 @@ info (
 	version: "v1"
 )
 
-// 定义服务
+// 公开接口，不需要登录
 @server (
-	prefix: /v1
+	prefix:     /v1
+	group:      public
+	middleware: RefreshTokenMiddleware
 )
-service dianping {
+service dianping-api {
 	// 发送手机验证码
 	@handler sendCode
 	get /user/code (SendCodeRequest) returns (SendCodeResult)
@@ -21,10 +23,22 @@ service dianping {
 	@handler login
 	post /user/login (LoginFormDTO) returns (LoginResult)
 
+	// 查询热门博文
+	@handler queryHotBlog
+	get /blog/hot (QueryHotBlogRequest) returns (BlogResponse)
+
 	// 测试 RefreshToken 中间件
 	@handler testRefreshToken
 	get /test/refresh returns (TestResponse)
+}
 
+// 需要认证的接口
+@server (
+	prefix:     /v1
+	group:      private
+	middleware: RefreshTokenMiddleware,LoginMiddleware
+)
+service dianping-api {
 	// 测试 RefreshToken + LoginMiddleware 中间件
 	@handler testRefreshTokenWithLogin
 	get /test/refresh-login returns (TestResponse)
@@ -40,10 +54,6 @@ service dianping {
 	// 查询当前用户的博文
 	@handler queryMyBlog
 	get /blog/of/me (QueryMyBlogRequest) returns (BlogResponse)
-
-	// 查询热门博文
-	@handler queryHotBlog
-	get /blog/hot (QueryHotBlogRequest) returns (BlogResponse)
 
 	// 查询当前用户信息
 	@handler queryMyInfo

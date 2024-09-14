@@ -1,24 +1,24 @@
-package handler
+package public
 
 import (
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"hm-dianping-go-zero/internal/logic"
+	"hm-dianping-go-zero/internal/logic/public"
 	"hm-dianping-go-zero/internal/svc"
 	"hm-dianping-go-zero/internal/types"
 )
 
-func addVoucherHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func QueryHotBlogHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.AddVoucherRequest
+		var req types.QueryHotBlogRequest
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := logic.NewAddVoucherLogic(r.Context(), svcCtx)
-		resp, err := l.AddVoucher(&req)
+		l := public.NewQueryHotBlogLogic(r.Context(), svcCtx)
+		resp, err := l.QueryHotBlog(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

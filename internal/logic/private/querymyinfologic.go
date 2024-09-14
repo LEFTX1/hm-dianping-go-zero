@@ -1,4 +1,4 @@
-package logic
+package private
 
 import (
 	"context"
@@ -9,21 +9,21 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type SaveBlogLogic struct {
+type QueryMyInfoLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewSaveBlogLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SaveBlogLogic {
-	return &SaveBlogLogic{
+func NewQueryMyInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *QueryMyInfoLogic {
+	return &QueryMyInfoLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *SaveBlogLogic) SaveBlog(req *types.SaveBlogRequest) (resp *types.IdResponse, err error) {
+func (l *QueryMyInfoLogic) QueryMyInfo() (resp *types.UserDTOReply, err error) {
 	// todo: add your logic here and delete this line
 
 	return
